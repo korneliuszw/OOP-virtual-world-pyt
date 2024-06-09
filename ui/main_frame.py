@@ -3,6 +3,7 @@ from tkinter.filedialog import askopenfile, asksaveasfile
 import dearpygui.dearpygui as dbg
 
 from game.world import World
+from ui.ability import create_ability_status
 from ui.board.base import BoardPaneHolder
 
 class MainFrame():
@@ -22,7 +23,7 @@ class MainFrame():
 
     def __create(self):
         self.__createMenu()
-        dbg.add_text("Hello World")
+        create_ability_status()
         dbg.delete_item("board_window")
         self.__boardPaneHolder.get().create()
 

@@ -20,6 +20,13 @@ def __main__():
     dpg.set_primary_window("Main frame", True)
     dpg.setup_dearpygui()
     dpg.show_viewport()
-    dpg.start_dearpygui()
+
+    try:
+        dpg.start_dearpygui()
+
+    except KeyboardInterrupt:
+        keyboard.reset()
+        exit(0)
+
     dpg.destroy_context()
 __main__()

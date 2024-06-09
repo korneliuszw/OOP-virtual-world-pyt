@@ -13,10 +13,11 @@ class World:
     __player: 'OrganismBase'
     __board_pane_holder = None
 
-    def __init__(self, width: int, height: int, boardSupplier: BoardSupplier):
+    def __init__(self, width: int, height: int, boardSupplier: BoardSupplier, player: OrganismBase):
         self.__height = height
         self.__width = width
         self.__boardSuplier = boardSupplier
+        self.__player = player
 
     def get_width(self) -> int:
         return self.__width
@@ -29,9 +30,15 @@ class World:
     
     def get_board(self) -> BoardSupplier:
         return self.__boardSuplier
+    
+    def get_board_pane(self):
+        return self.__board_pane_holder
 
     def set_board_pane(self, board_pane_holder):
         self.__board_pane_holder = board_pane_holder
+
+    def get_player(self):
+        return self.__player
     
     def __act_turn(self):
         while (len(self.__action_queue) > 0):

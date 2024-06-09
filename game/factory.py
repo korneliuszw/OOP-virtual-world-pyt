@@ -1,6 +1,7 @@
 from game.board.square import SquareBoard
 from game.organisms.animals.antelope import Antelope
 from game.organisms.animals.fox import Fox
+from game.organisms.animals.player import Player
 from game.organisms.animals.sheep import Sheep
 from game.organisms.animals.wolf import Wolf
 from game.organisms.animals.turtle import Turtle
@@ -15,7 +16,9 @@ from game.world import World
 
 def createWorld(width: int, height: int) -> World:
     boardSupplier = SquareBoard(width, height)
-    world = World(width, height, boardSupplier)
+    player = Player(Point(1, 1))
+    world = World(width, height, boardSupplier, player)
+    world.get_organisms().spawn(player)
     world.get_organisms().spawn(Fox(Point(5, 4)))
     world.get_organisms().spawn(Fox(Point(7, 8)))
     world.get_organisms().spawn(Fox(Point(2, 1)))
