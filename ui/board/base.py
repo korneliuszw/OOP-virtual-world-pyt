@@ -67,8 +67,13 @@ class BoardPaneBase(ABC):
         self.previous_list.clear()
         neighbours = self.__get_player_neighbours()
         for organismList in self._organisms.get_all():
-            organism = organismList[0]
+            alive_list = list(filter(lambda x: x.is_alive(), organismList))
+            if len(alive_list) == 0 :
+                continue
+            organism = alive_list[0]
             position = organism.get_position()
+            if not self._boardSupplier.is_legal_position(position):
+                continue
             cell_tag = self.cell_name(position)
             move = neighbours[position] if position in neighbours else None
             if move:
@@ -77,6 +82,8 @@ class BoardPaneBase(ABC):
             self.previous_list.append(organism.get_position())
 
         for point in neighbours.keys():
+            if not self._boardSupplier.is_legal_position(point):
+                continue
             self._update_cell(None, self.cell_name(point), neighbours[point])
             self.previous_list.append(point)
 

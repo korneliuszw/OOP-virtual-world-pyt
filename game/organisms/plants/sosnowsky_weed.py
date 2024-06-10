@@ -28,7 +28,6 @@ class SosnowskyWeed(Plant):
         for x in range(0, board.neighbours()):
             neighbour = board.get_new_position(self.get_position(), x )
             organism = world.get_organisms().get_entity_at(neighbour)
-            print(organism, isinstance(organism, Cybersheep))
             if isinstance(organism, Animal) and not isinstance(organism, Cybersheep):
                 organism.kill()
                 # TODO: Log

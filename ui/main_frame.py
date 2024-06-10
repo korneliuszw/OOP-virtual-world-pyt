@@ -47,6 +47,3 @@ class MainFrame():
                 print(file.readlines())
         except:
             pass
-
-    def __createContentPane():
-        pass

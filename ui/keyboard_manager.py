@@ -22,10 +22,8 @@ class KeyboardManager():
 
     def __move(self, _sender, data):
         key = data - dpg.mvKey_0
-        print(key)
         player: Player = self.__world.get_player()
         player.move(self.__world, key)
-        pass
 
     def __use_ability(self):
         player: Player = self.__world.get_player()
@@ -34,8 +32,10 @@ class KeyboardManager():
 
     __future: Future = None
     def __turn(self):
-        if self.__future != None and self.__future.running():
+        if self.__future != None and not self.__future.done():
             return
+        if self.__future:
+            print(self.__future.result())
         self.__future = self.__executor.submit(self.__world.turn)
         
 

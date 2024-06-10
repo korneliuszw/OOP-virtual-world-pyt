@@ -25,7 +25,7 @@ class SquareBoardPane(BoardPaneBase):
             dpg.add_text(default_value="", tag=tag_name+"move", color=(200, 100, 0), show=True, pos=(CELL_SIZE/2, 0))
 
     def _update_cell(self, organism: OrganismBase, cell_tag: str, move: int):
-        text = organism.get_symbol() if organism != None else ""
+        text = organism.get_symbol() if organism != None and organism.is_alive() else ""
         text_move = str(move) if move != None else ""
         dpg.configure_item(cell_tag + "move", default_value=text_move, show=(move != None))
         dpg.configure_item(cell_tag + "text", default_value=text)

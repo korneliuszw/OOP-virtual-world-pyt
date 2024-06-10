@@ -1,5 +1,4 @@
 from queue import SimpleQueue
-from traceback import print_stack
 from typing import Dict
 from game.organisms.animals.sheep import Sheep
 from game.point import Point

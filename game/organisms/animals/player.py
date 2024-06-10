@@ -82,7 +82,10 @@ class Player(Animal):
             self.show_ability()
 
     def move(self, world: World, neighbour: int):
-        self.__pending_move = world.get_board().get_new_position(self.get_position(), neighbour)
+        move = world.get_board().get_new_position(self.get_position(), neighbour)
+        if world.get_board().is_legal_position(move):
+            print("???")
+            self.__pending_move = move
 
     def is_waiting(self):
         return self.__waiting
