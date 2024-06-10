@@ -85,5 +85,5 @@ class Player(Animal):
         self.__pending_move = world.get_board().get_new_position(self.get_position(), neighbour)
 
     def is_waiting(self):
-        return self.is_waiting()
+        return self.__waiting
     

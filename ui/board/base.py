@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
+from typing import Dict
 
 from game.board.base import BoardSupplier
+from game.organisms.animals.player import Player
 from game.organisms.base import OrganismBase
 from game.organisms.dao import OrganismDAO
 from game.point import Point
@@ -14,16 +16,11 @@ class BoardPaneBase(ABC):
     _width: int
     _height: int
     _boardSupplier: BoardSupplier
+    _player: Player
 
-    def __init__(self, world: World, width: int, height: int):
-        self._organisms = world.get_organisms()
-        self._height = height
-        self._width = width
+    def __init__(self, world: World):
+        self.change_world(world)
 
-    def _get_organism_at(self, point: Point):
-        real_point = self.translate_point(point)
-        return self._organisms.get_entity_at(real_point)
-    
     def cell_name(self, point: Point):
         return f"cell-{point.x}-{point.y}"
 
@@ -33,37 +30,55 @@ class BoardPaneBase(ABC):
     
     @abstractmethod
     # MUST handle organism == None, clear text 
-    def _update_cell(self, organism: OrganismBase, cell_tag: str):
+    def _update_cell(self, organism: OrganismBase, cell_tag: str, move: int):
         pass
 
     def change_world(self, world: World):
         self._width = world.get_width()
         self._height = world.get_height()
         self._organisms = world.get_organisms()
+        self._boardSupplier = world.get_board()
+        self._player = world.get_player()
 
     @abstractmethod
     def _get_all_points(self) -> list[Point]:
         pass
 
-    def __get_player_neighbours(self):
-        pass
+    def __get_player_neighbours(self) -> Dict[Point, int]:
+        neighbours = {}
+        if not self._player.is_waiting() or not self._player.is_alive():
+            return neighbours
+        for x in range(0, self._boardSupplier.neighbours()):
+            neighbour = self._boardSupplier.get_new_position(self._player.get_position(), x)
+            neighbours[neighbour] = x
+        return neighbours
 
     def create(self):
         with dpg.child_window(width=CELL_SIZE*(self._width+1), height=CELL_SIZE*(self._height+1),show=True,tag="board_window", horizontal_scrollbar=True):
             for point in self._get_all_points():
                 self._create_cell(point)
                 # TODO: PLayer move
+
     previous_list = []
     def draw(self):
         for previous in self.previous_list:
             cell_tag = self.cell_name(previous)
-            self._update_cell(None, cell_tag)
+            self._update_cell(None, cell_tag, None)
         self.previous_list.clear()
+        neighbours = self.__get_player_neighbours()
         for organismList in self._organisms.get_all():
             organism = organismList[0]
-            cell_tag = self.cell_name(organism.get_position())
-            self._update_cell(organism, cell_tag)
+            position = organism.get_position()
+            cell_tag = self.cell_name(position)
+            move = neighbours[position] if position in neighbours else None
+            if move:
+                del neighbours[position]
+            self._update_cell(organism, cell_tag, move)
             self.previous_list.append(organism.get_position())
+
+        for point in neighbours.keys():
+            self._update_cell(None, self.cell_name(point), neighbours[point])
+            self.previous_list.append(point)
 
 class BoardPaneHolder:
     __pane: BoardPaneBase

@@ -13,7 +13,7 @@ def __main__():
     height = 20
     world = createWorld(width, height)
     keyboard = KeyboardManager(world)
-    board_pane = BoardPaneHolder(SquareBoardPane(world, width, height))
+    board_pane = BoardPaneHolder(SquareBoardPane(world))
     main_frame = MainFrame(world, board_pane)
     world.set_board_pane(board_pane)
     board_pane.get().draw()
