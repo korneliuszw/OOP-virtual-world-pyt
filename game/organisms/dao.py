@@ -24,9 +24,9 @@ class OrganismDAO:
         organism.set_id(id)
         self.__insertOrganism(organism)
 
-    def get_entity_at(self, position: Point) -> OrganismBase|None:
+    def get_entity_at(self, position: Point, symbol: str = None) -> OrganismBase|None:
         if position in self.__mapper:
-            fill = list(filter(lambda x: x.is_alive(), self.__mapper[position]))
+            fill = list(filter(lambda x: x.is_alive() and (symbol == None or x.get_symbol() == symbol), self.__mapper[position]))
             return fill[0] if len(fill) > 0 else None
     
     def move_organism(self, organism: OrganismBase, oldPosition: Point):

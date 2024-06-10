@@ -1,5 +1,6 @@
 from game.board.square import SquareBoard
 from game.organisms.animals.antelope import Antelope
+from game.organisms.animals.cybersheep import Cybersheep
 from game.organisms.animals.fox import Fox
 from game.organisms.animals.player import Player
 from game.organisms.animals.sheep import Sheep
@@ -45,8 +46,10 @@ def createWorld(width: int, height: int) -> World:
     world.get_organisms().spawn(Guarana(Point(13, 2)))
     world.get_organisms().spawn(Belladona(Point(15, 15)))
     world.get_organisms().spawn(Belladona(Point(8, 1)))
-    world.get_organisms().spawn(Belladona(Point(4, 8)))
+    world.get_organisms().spawn(Belladona(Point(10, 8)))
     world.get_organisms().spawn(Belladona(Point(10, 5)))
     world.get_organisms().spawn(SosnowskyWeed(Point(3, 8)))
     world.get_organisms().spawn(SosnowskyWeed(Point(9, 2)))
+    world.get_organisms().spawn(Cybersheep(Point(10, 9)))
+    world.get_organisms().spawn(Cybersheep(Point(2, 14)))
     return world

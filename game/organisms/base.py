@@ -57,8 +57,9 @@ class OrganismBase(ABC):
         random = randint(0, len(legal_positions) - 1)
         return legal_positions[random]
     
-    def _collide(self, world, collider: Any) -> bool:
+    def _collide(self, world, collider: 'OrganismBase') -> bool:
         # TODO: Log
+        print(f"{self.get_symbol()} zderza sie z {collider.get_symbol()}")
         if collider.__attack > self.__attack:
             self.kill()
         else:
