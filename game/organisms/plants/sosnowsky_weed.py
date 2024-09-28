@@ -1,4 +1,3 @@
-from traceback import print_stack
 from typing import Any
 from game.organisms.animals.animal import Animal
 from game.organisms.animals.cybersheep import Cybersheep
@@ -15,7 +14,7 @@ class SosnowskyWeed(Plant):
     def get_symbol(self) -> str:
         return "B"
     
-    def _collide(self, world: World, collider: OrganismBase) -> bool:
+    def _collide(self, _world: World, collider: OrganismBase) -> bool:
         self.kill()
         if not isinstance(collider, Cybersheep):
             collider.kill()
@@ -27,6 +26,7 @@ class SosnowskyWeed(Plant):
         board = world.get_board()
         for x in range(0, board.neighbours()):
             neighbour = board.get_new_position(self.get_position(), x )
+            if neighbour is None: return
             organism = world.get_organisms().get_entity_at(neighbour)
             if isinstance(organism, Animal) and not isinstance(organism, Cybersheep):
                 organism.kill()

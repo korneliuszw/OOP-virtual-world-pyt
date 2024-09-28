@@ -32,11 +32,17 @@ class KeyboardManager():
 
     __future: Future = None
     def __turn(self):
-        if self.__future != None and not self.__future.done():
-            return
-        if self.__future:
-            print(self.__future.result())
-        self.__future = self.__executor.submit(self.__world.turn)
+        try:
+            if self.__world.get_player().is_waiting() and self.__future and not self.__future.done():
+                return
+            elif self.__future and self.__future.running() and not self.__world.get_player().is_waiting():
+                task_interrupt_event.set()
+            if self.__future:
+                self.__future.result()
+            task_interrupt_event.clear()
+            self.__future = self.__executor.submit(self.__world.turn)
+        except Exception as e:
+            print(e)
         
 
     def set_world(self, world: World):
@@ -45,4 +51,4 @@ class KeyboardManager():
     def reset(self):
         task_interrupt_event.set()
         self.__executor.shutdown(cancel_futures=True)
-        task_interrupt_event.clear()
+        self.__executor = ThreadPoolExecutor(max_workers=1)

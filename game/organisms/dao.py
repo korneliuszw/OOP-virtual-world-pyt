@@ -3,10 +3,14 @@ from typing import Dict
 from game.point import Point
 
 
+from game.organisms.base import OrganismBase
 class OrganismDAO:
-    from game.organisms.base import OrganismBase
     __mapper: Dict[Point, list[OrganismBase]] = {}
     __counter: Dict[str, int] = {}
+
+    def __init__(self):
+        self.__mapper = {}
+        self.__counter = {}
 
     def __insertOrganism(self, organism: OrganismBase):
         position = organism.get_position()

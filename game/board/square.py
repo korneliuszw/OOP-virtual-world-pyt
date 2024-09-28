@@ -13,16 +13,19 @@ class SquareBoard(BoardSupplier):
 
     def get_new_position(self, current: Point, move: int) -> Point:
         if (move == 0):
-            return Point(current.x - 1, current.y)
+            point =  Point(current.x - 1, current.y)
         elif (move == 1):
-            return Point(current.x + 1, current.y)
+            point = Point(current.x + 1, current.y)
         elif (move == 2):
-            return Point(current.x, current.y - 1)
+            point = Point(current.x, current.y - 1)
         elif (move == 3):
-            return Point(current.x, current.y + 1)
-        raise "Invalid move"
+            point = Point(current.x, current.y + 1)
+        if point is None:
+            raise "Invalid move"
+        if self.is_legal_position(point):
+            return point
     
-    def neighbours(self, ) -> int:
+    def neighbours(self) -> int:
         return 4
 
     def is_legal_position(self, position: Point) -> bool:

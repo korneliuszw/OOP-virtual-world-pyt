@@ -50,7 +50,7 @@ class OrganismBase(ABC):
         board = world.get_board()
         for x in range(0, board.neighbours()):
             new_position = board.get_new_position(self.__position, x)
-            if board.is_legal_position(new_position) and self._can_move_there(world, new_position, skip_occupied):
+            if new_position != None and board.is_legal_position(new_position) and self._can_move_there(world, new_position, skip_occupied):
                 legal_positions.append(new_position)
         if len(legal_positions) == 0:
             return self.__position
@@ -101,7 +101,7 @@ class OrganismBase(ABC):
     def act(self, world):
         pass
 
-    def __lt__(self, other: 'OrganismBase'):
+    def __gt__(self, other: 'OrganismBase'):
         if self.get_aggressivness() == NON_MOVABLE_ORGANISM and other.get_aggressivness() != NON_MOVABLE_ORGANISM:
             return True
         elif other.get_aggressivness() == NON_MOVABLE_ORGANISM and self.get_aggressivness() != NON_MOVABLE_ORGANISM:

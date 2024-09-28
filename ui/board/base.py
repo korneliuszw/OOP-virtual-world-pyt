@@ -39,6 +39,7 @@ class BoardPaneBase(ABC):
         self._organisms = world.get_organisms()
         self._boardSupplier = world.get_board()
         self._player = world.get_player()
+        self.previous_list = []
 
     @abstractmethod
     def _get_all_points(self) -> list[Point]:
@@ -50,14 +51,25 @@ class BoardPaneBase(ABC):
             return neighbours
         for x in range(0, self._boardSupplier.neighbours()):
             neighbour = self._boardSupplier.get_new_position(self._player.get_position(), x)
-            neighbours[neighbour] = x
+            if neighbour is not None:
+                neighbours[neighbour] = x
         return neighbours
 
     def create(self):
-        with dpg.child_window(width=CELL_SIZE*(self._width+1), height=CELL_SIZE*(self._height+1),show=True,tag="board_window", horizontal_scrollbar=True):
-            for point in self._get_all_points():
-                self._create_cell(point)
-                # TODO: PLayer move
+        try:
+            dpg.delete_item("board_window")
+        except Exception as e:
+            print(e)
+            pass
+
+        try:
+            with dpg.child_window(width=CELL_SIZE*(self._width+1), height=CELL_SIZE*(self._height+1),show=True,tag="board_window", horizontal_scrollbar=True, parent="Main frame"):
+                for point in self._get_all_points():
+                    self._create_cell(point)
+                    # TODO: PLayer move
+        except Exception as e:
+            print(e)
+            pass
 
     previous_list = []
     def draw(self):

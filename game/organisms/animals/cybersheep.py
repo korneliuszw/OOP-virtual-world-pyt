@@ -21,7 +21,7 @@ class Cybersheep(Sheep):
             current = queue.get()
             for x in range(0, board.neighbours()):
                 neighbour = board.get_new_position(current, x)
-                if neighbour in marked:
+                if neighbour is None or neighbour in marked:
                     continue
                 marked[neighbour] = current
                 queue.put(neighbour)

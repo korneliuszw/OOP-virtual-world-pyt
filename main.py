@@ -1,3 +1,4 @@
+from tkinter.simpledialog import askinteger
 import dearpygui.dearpygui as dpg
 
 from game.factory import createWorld
@@ -9,12 +10,12 @@ from ui.main_frame import MainFrame
 def __main__():
     dpg.create_context()
     dpg.create_viewport(title="Wirtualny swiat 198349", width=800, height=600)
-    width = 20
-    height = 20
+    width = askinteger("Szerokosc", "Podaj szerokosc > 0")
+    height = askinteger("Wysokosc", "Podaj wysokosc > 0")
     world = createWorld(width, height)
     keyboard = KeyboardManager(world)
     board_pane = BoardPaneHolder(SquareBoardPane(world))
-    main_frame = MainFrame(world, board_pane)
+    main_frame = MainFrame(world, board_pane, keyboard)
     world.set_board_pane(board_pane)
     board_pane.get().draw()
     dpg.set_primary_window("Main frame", True)
